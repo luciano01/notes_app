@@ -1,16 +1,35 @@
-# notes_app
+# Notes App 
 
-A new Flutter project.
+## CRUD with Hive
 
-## Getting Started
+Implementing simple storage operations, CRUD (Create, Read, Update, Delete), using Hive.
 
-This project is a starting point for a Flutter application.
+## Screenshots
+Soon
 
-A few resources to get you started if this is your first Flutter project:
+## For developers
+> To clone locally
+```
+$ git clone git@github.com:luciano01/notes_app.git
+$ cd notes_app
+```
+> Open the project in an editor, if you use VS Code, follow this
+```
+$ cd notes_app
+$ code .
+```
+> To run, follow this on terminal
+```
+$ flutter clean
+$ flutter pub get
+$ flutter run --release
+```
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Built with
+- [Dart programming language](https://dart.dev/)
+- [Flutter](https://flutter.dev/)
+- [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+- [Hive](https://pub.dev/packages/hive)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Author
+- Luciano Martins ([Linkedin](https://br.linkedin.com/in/luciano01))
