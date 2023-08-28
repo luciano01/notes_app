@@ -10,7 +10,9 @@ void main() {
 
   setUp(() {
     mockUpdateNoteRepository = MockUpdateNoteRepository();
-    updateNoteUsecase = UpdateNoteUsecaseImpl(mockUpdateNoteRepository);
+    updateNoteUsecase = UpdateNoteUsecaseImpl(
+      mockUpdateNoteRepository,
+    );
   });
 
   const indexNote = 1;
