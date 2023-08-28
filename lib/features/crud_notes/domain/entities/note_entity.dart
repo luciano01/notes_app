@@ -1,5 +1,7 @@
 import 'package:hive/hive.dart';
 
+part 'note_entity.g.dart';
+
 @HiveType(typeId: 0)
 class NoteEntity {
   @HiveField(0)
