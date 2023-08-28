@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import 'package:notes_app/features/domain/domain.dart';
+import 'package:notes_app/features/crud_notes/domain/domain.dart';
 
 class MockNoteEntity extends Mock implements NoteEntity {}
 
