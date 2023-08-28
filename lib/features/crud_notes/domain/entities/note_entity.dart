@@ -31,4 +31,18 @@ class NoteEntity {
       date: DateTime.now(),
     );
   }
+
+  NoteEntity copyWith({
+    String? title,
+    String? description,
+    DateTime? date,
+    bool? isCompleted,
+  }) {
+    return NoteEntity(
+      title: title ?? this.title,
+      description: description ?? this.description,
+      date: date ?? this.date,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
 }
