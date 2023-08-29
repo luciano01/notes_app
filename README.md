@@ -5,7 +5,9 @@
 Implementing simple storage operations, CRUD (Create, Read, Update, Delete), using Hive.
 
 ## Screenshots
-Soon
+<img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/ListNotes.png">
+<img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/AddNote.png">
+<img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/DeleteNote.png">
 
 ## For developers
 > To clone locally
