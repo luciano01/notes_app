@@ -9,6 +9,13 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomePage(),
       binding: HomeBinding(),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: AppRoutes.registerNote,
+      page: () => const RegisterNotePage(),
+      binding: RegisterNoteBinding(),
+      transition: Transition.leftToRight,
     ),
   ];
 }

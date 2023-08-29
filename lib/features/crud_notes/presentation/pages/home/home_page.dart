@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:intl/intl.dart';
 
+import '../../../../../core/core.dart';
 import '../../../domain/domain.dart';
 import '../../presentation.dart';
 
@@ -20,7 +20,7 @@ class HomePage extends GetView<HomeState> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () => saveOrUpdateNote(context),
+        onPressed: () => Get.toNamed(AppRoutes.registerNote),
       ),
       body: ValueListenableBuilder<Box<NoteEntity>>(
         valueListenable: Hive.box<NoteEntity>('notes').listenable(),
@@ -47,174 +47,110 @@ class HomePage extends GetView<HomeState> {
               itemCount: box.length,
               itemBuilder: (context, index) {
                 final note = box.getAt(index) as NoteEntity;
-                return Dismissible(
-                  key: UniqueKey(),
-                  background: Container(
-                    color: Colors.red,
+                return ListTile(
+                  leading: IconButton(
+                    icon: note.isCompleted
+                        ? const Icon(
+                            Icons.check_circle,
+                          )
+                        : const Icon(
+                            Icons.radio_button_unchecked,
+                          ),
+                    onPressed: () {
+                      controller.updateNote(index, note);
+                    },
                   ),
-                  direction: DismissDirection.endToStart,
-                  onDismissed: (direction) {
-                    controller.deleteNote(index);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Row(
-                          children: [
-                            Icon(
-                              Icons.warning_amber_rounded,
-                              color: Colors.redAccent,
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline_rounded),
+                    onPressed: () {
+                      showDialog<void>(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.warning_amber_rounded),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    'Do you want to delete this Note?',
+                                    style: GoogleFonts.roboto(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w300,
+                                      fontStyle: FontStyle.normal,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                            SizedBox(width: 10),
-                            Text(
-                              'Successfully deleted Note!',
+                            content: Text(
+                              'The task will be permanently deleted from the database.',
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w300,
+                                fontStyle: FontStyle.normal,
+                                color: Colors.black,
+                              ),
                             ),
-                          ],
-                        ),
-                      ),
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () => Get.back(),
+                              ),
+                              TextButton(
+                                child: const Text('Ok'),
+                                onPressed: () {
+                                  Get.back();
+                                  controller.deleteNote(index);
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  ),
+                  title: Text(
+                    note.title,
+                    style: GoogleFonts.roboto(
+                      fontSize: 16,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.black,
+                      decoration: note.isCompleted
+                          ? TextDecoration.lineThrough
+                          : TextDecoration.none,
+                    ),
+                  ),
+                  subtitle: note.description.isNotEmpty
+                      ? Text(
+                          note.description,
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            fontStyle: FontStyle.normal,
+                            color: Colors.black,
+                            decoration: note.isCompleted
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                          ),
+                        )
+                      : null,
+                  onTap: () {
+                    Get.toNamed(
+                      AppRoutes.registerNote,
+                      parameters: {
+                        "index": index.toString(),
+                      },
+                      arguments: note,
                     );
                   },
-                  child: ListTile(
-                    onTap: () => saveOrUpdateNote(
-                      context,
-                      note: note,
-                      indexToUpdate: index,
-                    ),
-                    leading: IconButton(
-                      icon: note.isCompleted
-                          ? const Icon(
-                              Icons.check_circle,
-                            )
-                          : const Icon(
-                              Icons.radio_button_unchecked,
-                            ),
-                      onPressed: () {
-                        controller.updateNote(index, note);
-                      },
-                    ),
-                    title: Text(
-                      note.title,
-                      style: GoogleFonts.roboto(
-                        fontSize: 16,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.black,
-                        decoration: note.isCompleted
-                            ? TextDecoration.lineThrough
-                            : TextDecoration.none,
-                      ),
-                    ),
-                    subtitle: note.description.isNotEmpty
-                        ? Text(
-                            note.description,
-                            style: GoogleFonts.roboto(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w300,
-                              fontStyle: FontStyle.normal,
-                              color: Colors.black,
-                              decoration: note.isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                            ),
-                          )
-                        : null,
-                  ),
                 );
               },
             );
           }
         },
       ),
-    );
-  }
-
-  void saveOrUpdateNote(
-    BuildContext context, {
-    NoteEntity? note,
-    int? indexToUpdate,
-  }) async {
-    controller.setNoteEntity(noteEntity: note);
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return Padding(
-          padding: MediaQuery.of(context).viewInsets,
-          child: Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Title',
-                  ),
-                  onChanged: (value) => controller.changeTitle(value),
-                  initialValue: controller.noteEntity.title,
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.text,
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                    hintText: 'Description',
-                  ),
-                  onChanged: (value) => controller.changeDescription(value),
-                  initialValue: controller.noteEntity.description,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.schedule),
-                            onPressed: () async {
-                              DateTime? picked = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime.now(),
-                                lastDate: DateTime(2030),
-                                builder: (context, child) {
-                                  return child!;
-                                },
-                              );
-                              if (picked != null) {
-                                controller.changeDate(picked);
-                              }
-                            },
-                          ),
-                          Obx(
-                            () => Text(
-                              DateFormat.yMd(
-                                'en_US',
-                              ).format(
-                                controller.noteEntity.date,
-                              ),
-                              style: GoogleFonts.roboto(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
-                                fontStyle: FontStyle.normal,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    TextButton(
-                      child: const Text('Save'),
-                      onPressed: () => controller.saveNote(
-                        indexToUpdate: indexToUpdate,
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
     );
   }
 }
