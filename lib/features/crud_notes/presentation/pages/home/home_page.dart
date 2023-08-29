@@ -23,7 +23,7 @@ class HomePage extends GetView<HomeState> {
         onPressed: () => Get.toNamed(AppRoutes.registerNote),
       ),
       body: ValueListenableBuilder<Box<NoteEntity>>(
-        valueListenable: Hive.box<NoteEntity>('notes').listenable(),
+        valueListenable: controller.notesBox.listenable(),
         builder: (context, box, _) {
           if (box.isEmpty || box.length == 0) {
             return const Center(
@@ -44,9 +44,9 @@ class HomePage extends GetView<HomeState> {
             );
           } else {
             return ListView.builder(
-              itemCount: box.length,
+              itemCount: controller.notesBox.length,
               itemBuilder: (context, index) {
-                final note = box.getAt(index) as NoteEntity;
+                final note = box.getAt(index)!;
                 return ListTile(
                   leading: IconButton(
                     icon: note.isCompleted

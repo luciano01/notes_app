@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../../../domain/domain.dart';
 
@@ -10,6 +11,14 @@ class HomeState extends GetxController {
     this._deleteNoteUsecaseImpl,
     this._updateNoteUsecaseImpl,
   );
+
+  @override
+  void onInit() {
+    notesBox = Hive.box('notes');
+    super.onInit();
+  }
+
+  late Box<NoteEntity> notesBox;
 
   /// Update Note by index passing new value
   Future<void> updateNote(
