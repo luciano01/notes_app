@@ -6,9 +6,9 @@ Implementing simple storage operations, CRUD (Create, Read, Update, Delete), usi
 
 ## Screenshots
 <p float="left">
-    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/EmptyList.png">
-    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/ListNotes.png">
-    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/AddNote.png">
+    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/images/screenshots/EmptyList.png">
+    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/images/screenshots/ListNotes.png">
+    <img width="150" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/images/screenshots/AddNote.png">
 </p>
 
 ## For developers
