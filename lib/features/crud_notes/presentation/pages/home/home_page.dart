@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../core/core.dart';
 import '../../../domain/domain.dart';
@@ -14,142 +15,201 @@ class HomePage extends GetView<HomeState> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Notes'),
-        leading: const Icon(Icons.account_circle_outlined),
+        leading: const Icon(Icons.account_circle),
+        title: RichText(
+          text: TextSpan(
+            text: 'Hello, ',
+            style: GoogleFonts.lato(
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              color: Colors.grey.shade600,
+            ),
+            children: [
+              TextSpan(
+                text: 'Luciano',
+                style: GoogleFonts.lato(
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.grey.shade900,
+                ),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {},
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.yellow.shade800,
+        child: Icon(
+          Icons.add,
+          color: Colors.grey.shade50,
+        ),
         onPressed: () => Get.toNamed(AppRoutes.registerNote),
       ),
-      body: ValueListenableBuilder<Box<NoteEntity>>(
-        valueListenable: controller.notesBox.listenable(),
-        builder: (context, box, _) {
-          if (box.isEmpty || box.length == 0) {
-            return const Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Empty list!',
-                    style: TextStyle(
-                      fontSize: 20,
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: 16,
+            ).copyWith(left: 16, right: 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    textInputAction: TextInputAction.search,
+                    cursorColor: Colors.grey.shade900,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                        borderSide: const BorderSide(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                      filled: true,
+                      fillColor: Colors.grey.shade200,
+                      hintText: 'Search your notes',
                     ),
                   ),
-                  Text(
-                    'You have no Notes at this moment.',
+                ),
+                IconButton(
+                  icon: Icon(
+                    Icons.filter_list,
+                    color: Colors.grey.shade600,
                   ),
-                ],
-              ),
-            );
-          } else {
-            return ListView.builder(
-              itemCount: controller.notesBox.length,
-              itemBuilder: (context, index) {
-                final note = box.getAt(index)!;
-                return ListTile(
-                  leading: IconButton(
-                    icon: note.isCompleted
-                        ? const Icon(
-                            Icons.check_circle,
-                          )
-                        : const Icon(
-                            Icons.radio_button_unchecked,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ValueListenableBuilder<Box<NoteEntity>>(
+              valueListenable: controller.notesBox.listenable(),
+              builder: (context, box, _) {
+                if (box.isEmpty || box.length == 0) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          AppImages.emptyList,
+                          width: 180,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
                           ),
-                    onPressed: () {
-                      controller.updateNote(index, note);
-                    },
-                  ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.delete_outline_rounded),
-                    onPressed: () {
-                      showDialog<void>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Icon(Icons.warning_amber_rounded),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    'Do you want to delete this Note?',
-                                    style: GoogleFonts.roboto(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w300,
-                                      fontStyle: FontStyle.normal,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                          child: Text(
+                            'Ooops...Empty list!',
+                            style: GoogleFonts.lato(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              fontStyle: FontStyle.normal,
+                              color: Colors.grey.shade900,
                             ),
-                            content: Text(
-                              'The task will be permanently deleted from the database.',
-                              style: GoogleFonts.roboto(
-                                fontWeight: FontWeight.w300,
-                                fontStyle: FontStyle.normal,
-                                color: Colors.black,
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text('Cancel'),
-                                onPressed: () => Get.back(),
-                              ),
-                              TextButton(
-                                child: const Text('Ok'),
-                                onPressed: () {
-                                  Get.back();
-                                  controller.deleteNote(index);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    },
-                  ),
-                  title: Text(
-                    note.title,
-                    style: GoogleFonts.roboto(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.black,
-                      decoration: note.isCompleted
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
-                  ),
-                  subtitle: note.description.isNotEmpty
-                      ? Text(
-                          note.description,
-                          style: GoogleFonts.roboto(
+                          ),
+                        ),
+                        Text(
+                          'Add a new Note by clicking the button below.',
+                          style: GoogleFonts.lato(
                             fontSize: 14,
-                            fontWeight: FontWeight.w300,
+                            fontWeight: FontWeight.normal,
+                            fontStyle: FontStyle.normal,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return ListView.builder(
+                    itemCount: controller.notesBox.length,
+                    itemBuilder: (context, index) {
+                      final note = box.getAt(index)!;
+                      return ListTile(
+                        leading: IconButton(
+                          icon: note.isCompleted
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color: Colors.yellow.shade800,
+                                )
+                              : Icon(
+                                  Icons.check_circle_outline,
+                                  color: Colors.yellow.shade800,
+                                ),
+                          onPressed: () {
+                            controller.updateNote(index, note);
+                          },
+                        ),
+                        trailing: Text(
+                          DateFormat.yMd('en_US').format(note.date),
+                          style: GoogleFonts.lato(
+                            // fontSize: 16,
                             fontStyle: FontStyle.normal,
                             color: Colors.black,
                             decoration: note.isCompleted
                                 ? TextDecoration.lineThrough
                                 : TextDecoration.none,
                           ),
-                        )
-                      : null,
-                  onTap: () {
-                    Get.toNamed(
-                      AppRoutes.registerNote,
-                      parameters: {
-                        "index": index.toString(),
-                      },
-                      arguments: note,
-                    );
-                  },
-                );
+                        ),
+                        title: Text(
+                          note.title,
+                          style: GoogleFonts.lato(
+                            fontSize: 16,
+                            fontStyle: FontStyle.normal,
+                            color: Colors.black,
+                            decoration: note.isCompleted
+                                ? TextDecoration.lineThrough
+                                : TextDecoration.none,
+                          ),
+                        ),
+                        subtitle: note.description.isNotEmpty
+                            ? Text(
+                                note.description,
+                                style: GoogleFonts.lato(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  fontStyle: FontStyle.normal,
+                                  color: Colors.black,
+                                  decoration: note.isCompleted
+                                      ? TextDecoration.lineThrough
+                                      : TextDecoration.none,
+                                ),
+                              )
+                            : null,
+                        onTap: () {
+                          Get.toNamed(
+                            AppRoutes.registerNote,
+                            parameters: {
+                              "index": index.toString(),
+                            },
+                            arguments: note,
+                          );
+                        },
+                      );
+                    },
+                  );
+                }
               },
-            );
-          }
-        },
+            ),
+          ),
+        ],
       ),
     );
   }

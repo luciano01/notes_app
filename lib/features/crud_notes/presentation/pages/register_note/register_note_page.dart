@@ -13,73 +13,61 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-            controller.indexToUpdate.isNotEmpty ? 'Update Note' : 'Add Note'),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.done),
-        onPressed: () => controller.saveNote(),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endContained,
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          children: [
-            Visibility(
-              visible: controller.indexToUpdate.isNotEmpty,
-              child: IconButton(
-                icon: const Icon(Icons.delete_outline_rounded),
-                onPressed: () {
-                  showDialog<void>(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Icon(Icons.warning_amber_rounded),
-                            const SizedBox(width: 6),
-                            Expanded(
-                              child: Text(
-                                'Do you want to delete this Note?',
-                                style: GoogleFonts.roboto(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300,
-                                  fontStyle: FontStyle.normal,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        content: Text(
-                          'The task will be permanently deleted from the database.',
-                          style: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
-                            color: Colors.black,
-                          ),
-                        ),
-                        actions: <Widget>[
-                          TextButton(
-                            child: const Text('Cancel'),
-                            onPressed: () => Get.back(),
-                          ),
-                          TextButton(
-                            child: const Text('Ok'),
-                            onPressed: () {
-                              Get.back();
-                              controller.deleteNote(
-                                int.parse(controller.indexToUpdate),
-                              );
-                            },
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
+          controller.indexToUpdate.isNotEmpty ? 'Update Note' : 'New Note',
+          style: GoogleFonts.lato(
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+            fontStyle: FontStyle.normal,
+            color: Colors.grey.shade900,
+          ),
+        ),
+        actions: [
+          Visibility(
+            visible: controller.indexToUpdate.isNotEmpty,
+            child: IconButton(
+              icon: Icon(
+                Icons.delete_forever_outlined,
+                color: Colors.red.shade800,
+              ),
+              onPressed: () => controller.deleteNote(
+                int.parse(controller.indexToUpdate),
               ),
             ),
-          ],
+          )
+        ],
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
+        child: ElevatedButton(
+          style: ButtonStyle(
+            minimumSize: MaterialStateProperty.all<Size>(
+              Size(Get.width, 48),
+            ),
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Colors.yellow.shade800,
+            ),
+            foregroundColor: MaterialStateProperty.all<Color>(
+              Colors.yellow.shade50,
+            ),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
+          ),
+          child: Text(
+            'Save',
+            style: GoogleFonts.lato(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.normal,
+              color: Colors.grey.shade50,
+            ),
+          ),
+          onPressed: () => controller.saveNote(),
         ),
       ),
       body: ListView(
@@ -88,39 +76,121 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
           horizontal: 16,
         ),
         children: [
-          const SizedBox(height: 16),
-          TextFormField(
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Title Note',
+                style: GoogleFonts.lato(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.grey.shade900,
+                ),
               ),
-              hintText: 'Title',
-            ),
-            onChanged: (value) => controller.changeTitle(value),
-            initialValue: controller.noteEntity.title,
+              TextFormField(
+                keyboardType: TextInputType.text,
+                cursorColor: Colors.yellow.shade900,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: Colors.yellow.shade800,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(16),
+                    borderSide: BorderSide(
+                      color: Colors.yellow.shade900,
+                    ),
+                  ),
+                  hintText: 'Add Note Title...',
+                  hintStyle: GoogleFonts.lato(
+                    fontWeight: FontWeight.normal,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.grey.shade600,
+                  ),
+                ),
+                onChanged: (value) => controller.changeTitle(value),
+                initialValue: controller.noteEntity.title,
+              ),
+            ],
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
               vertical: 16,
             ),
-            child: TextFormField(
-              keyboardType: TextInputType.text,
-              maxLines: 3,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Description Note',
+                  style: GoogleFonts.lato(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    fontStyle: FontStyle.normal,
+                    color: Colors.grey.shade900,
+                  ),
                 ),
-                hintText: 'Description',
-              ),
-              onChanged: (value) => controller.changeDescription(value),
-              initialValue: controller.noteEntity.description,
+                TextFormField(
+                  keyboardType: TextInputType.text,
+                  cursorColor: Colors.yellow.shade900,
+                  maxLines: 3,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        color: Colors.yellow.shade800,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(16),
+                      borderSide: BorderSide(
+                        color: Colors.yellow.shade900,
+                      ),
+                    ),
+                    hintText: 'Add Description...',
+                    hintStyle: GoogleFonts.lato(
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                  onChanged: (value) => controller.changeDescription(value),
+                  initialValue: controller.noteEntity.description,
+                ),
+              ],
             ),
           ),
           Row(
             children: [
-              IconButton(
-                icon: const Icon(Icons.schedule),
+              OutlinedButton.icon(
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                  ),
+                ),
+                icon: Icon(
+                  Icons.calendar_month,
+                  color: Colors.yellow.shade900,
+                ),
+                label: Obx(
+                  () => Text(
+                    DateFormat.yMd(
+                      'en_US',
+                    ).format(
+                      controller.noteEntity.date,
+                    ),
+                    style: GoogleFonts.lato(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade600,
+                    ),
+                  ),
+                ),
                 onPressed: () async {
                   DateTime? picked = await showDatePicker(
                     context: context,
@@ -135,21 +205,6 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
                     controller.changeDate(picked);
                   }
                 },
-              ),
-              Obx(
-                () => Text(
-                  DateFormat.yMd(
-                    'en_US',
-                  ).format(
-                    controller.noteEntity.date,
-                  ),
-                  style: GoogleFonts.roboto(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w300,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.black,
-                  ),
-                ),
               ),
             ],
           ),
