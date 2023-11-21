@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import '../../presentation.dart';
@@ -12,14 +11,15 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(
           controller.indexToUpdate.isNotEmpty ? 'Update Note' : 'New Note',
-          style: GoogleFonts.lato(
-            fontSize: 16,
-            fontWeight: FontWeight.normal,
-            fontStyle: FontStyle.normal,
-            color: Colors.grey.shade900,
-          ),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontSize: 16,
+                fontWeight: FontWeight.normal,
+                fontStyle: FontStyle.normal,
+                color: Colors.grey.shade900,
+              ),
         ),
         actions: [
           Visibility(
@@ -27,11 +27,20 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
             child: IconButton(
               icon: Icon(
                 Icons.delete_forever_outlined,
-                color: Colors.red.shade800,
+                color: Colors.red.shade500,
               ),
-              onPressed: () => controller.deleteNote(
-                int.parse(controller.indexToUpdate),
-              ),
+              onPressed: () {
+                _alertDialogDeleteNote(
+                  context,
+                  () {
+                    controller.deleteNote(
+                      int.parse(controller.indexToUpdate),
+                    );
+                    Get.back();
+                  },
+                  () => Get.back(),
+                );
+              },
             ),
           )
         ],
@@ -49,23 +58,20 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
             backgroundColor: MaterialStateProperty.all<Color>(
               Colors.yellow.shade800,
             ),
-            foregroundColor: MaterialStateProperty.all<Color>(
-              Colors.yellow.shade50,
-            ),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(12),
               ),
             ),
           ),
           child: Text(
             'Save',
-            style: GoogleFonts.lato(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              color: Colors.grey.shade50,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.normal,
+                  color: Colors.grey.shade50,
+                ),
           ),
           onPressed: () => controller.saveNote(),
         ),
@@ -81,35 +87,41 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
             children: [
               Text(
                 'Title Note',
-                style: GoogleFonts.lato(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.grey.shade900,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade900,
+                    ),
               ),
               TextFormField(
                 keyboardType: TextInputType.text,
                 cursorColor: Colors.yellow.shade900,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade900,
+                    ),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
                       color: Colors.yellow.shade800,
                     ),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
                       color: Colors.yellow.shade900,
                     ),
                   ),
                   hintText: 'Add Note Title...',
-                  hintStyle: GoogleFonts.lato(
-                    fontWeight: FontWeight.normal,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.grey.shade600,
-                  ),
+                  hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey.shade700,
+                      ),
                 ),
                 onChanged: (value) => controller.changeTitle(value),
                 initialValue: controller.noteEntity.title,
@@ -125,36 +137,40 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
               children: [
                 Text(
                   'Description Note',
-                  style: GoogleFonts.lato(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    fontStyle: FontStyle.normal,
-                    color: Colors.grey.shade900,
-                  ),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey.shade900,
+                      ),
                 ),
                 TextFormField(
                   keyboardType: TextInputType.text,
-                  cursorColor: Colors.yellow.shade900,
+                  cursorColor: Colors.yellow.shade800,
                   maxLines: 3,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        fontWeight: FontWeight.normal,
+                        fontStyle: FontStyle.normal,
+                        color: Colors.grey.shade900,
+                      ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
                         color: Colors.yellow.shade800,
                       ),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide(
-                        color: Colors.yellow.shade900,
+                        color: Colors.yellow.shade800,
                       ),
                     ),
                     hintText: 'Add Description...',
-                    hintStyle: GoogleFonts.lato(
-                      fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.grey.shade600,
-                    ),
+                    hintStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontWeight: FontWeight.normal,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.grey.shade700,
+                        ),
                   ),
                   onChanged: (value) => controller.changeDescription(value),
                   initialValue: controller.noteEntity.description,
@@ -168,7 +184,7 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
                 style: ButtonStyle(
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
@@ -183,18 +199,18 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
                     ).format(
                       controller.noteEntity.date,
                     ),
-                    style: GoogleFonts.lato(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.grey.shade600,
+                        ),
                   ),
                 ),
                 onPressed: () async {
                   DateTime? picked = await showDatePicker(
                     context: context,
-                    initialDate: DateTime.now(),
+                    initialDate: controller.noteEntity.date,
                     firstDate: DateTime.now(),
                     lastDate: DateTime(2030),
                     builder: (context, child) {
@@ -210,6 +226,50 @@ class RegisterNotePage extends GetView<RegisterNoteState> {
           ),
         ],
       ),
+    );
+  }
+
+  Future<void> _alertDialogDeleteNote(
+    BuildContext context,
+    void Function()? onPressedDelete,
+    void Function()? onPressedCancel,
+  ) {
+    return showDialog<void>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Delete Note?"),
+          content: const Text(
+            "This Note will be permanently deleted. Are sure about this?",
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: onPressedCancel,
+              child: Text(
+                'Cancel',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade900,
+                    ),
+              ),
+            ),
+            TextButton(
+              onPressed: onPressedDelete,
+              child: Text(
+                'Ok',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade900,
+                    ),
+              ),
+            ),
+          ],
+        );
+      },
     );
   }
 }

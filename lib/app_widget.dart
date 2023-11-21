@@ -15,7 +15,7 @@ class AppWidget extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: lightColorScheme,
-        textTheme: GoogleFonts.robotoTextTheme(),
+        textTheme: GoogleFonts.poppinsTextTheme(),
       ),
       title: 'Notes App',
       getPages: AppPages.routes,

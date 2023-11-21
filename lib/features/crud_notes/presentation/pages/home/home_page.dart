@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
@@ -15,30 +14,35 @@ class HomePage extends GetView<HomeState> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: const Icon(Icons.account_circle),
+        leading: Icon(
+          Icons.account_circle,
+          color: Colors.grey.shade900,
+        ),
+        centerTitle: false,
         title: RichText(
           text: TextSpan(
             text: 'Hello, ',
-            style: GoogleFonts.lato(
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.normal,
-              color: Colors.grey.shade600,
-            ),
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  color: Colors.grey.shade700,
+                ),
             children: [
               TextSpan(
                 text: 'Luciano',
-                style: GoogleFonts.lato(
-                  fontWeight: FontWeight.bold,
-                  fontStyle: FontStyle.normal,
-                  color: Colors.grey.shade900,
-                ),
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.normal,
+                      color: Colors.grey.shade900,
+                    ),
               ),
             ],
           ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.more_vert),
+            icon: Icon(
+              Icons.more_vert,
+              color: Colors.grey.shade900,
+            ),
             onPressed: () {},
           ),
         ],
@@ -69,29 +73,36 @@ class HomePage extends GetView<HomeState> {
                     ),
                     child: Text(
                       'Ooops...Empty list!',
-                      style: GoogleFonts.lato(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        fontStyle: FontStyle.normal,
-                        color: Colors.grey.shade900,
-                      ),
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            fontStyle: FontStyle.normal,
+                            color: Colors.grey.shade900,
+                          ),
                     ),
                   ),
                   Text(
                     'Add a new Note by clicking the button below.',
-                    style: GoogleFonts.lato(
-                      fontSize: 14,
-                      fontWeight: FontWeight.normal,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.grey.shade600,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.grey.shade700,
+                        ),
                   ),
                 ],
               ),
             );
           } else {
-            return ListView.builder(
+            return ListView.separated(
               itemCount: controller.notesBox.length,
+              separatorBuilder: (context, index) => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Divider(
+                  thickness: 0.4,
+                  color: Colors.grey.shade400,
+                ),
+              ),
               itemBuilder: (context, index) {
                 final note = box.getAt(index)!;
                 return ListTile(
@@ -111,38 +122,39 @@ class HomePage extends GetView<HomeState> {
                   ),
                   trailing: Text(
                     DateFormat.yMd('en_US').format(note.date),
-                    style: GoogleFonts.lato(
-                      // fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.black,
-                      decoration: note.isCompleted
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 10,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.grey.shade700,
+                          decoration: note.isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
                   ),
                   title: Text(
                     note.title,
-                    style: GoogleFonts.lato(
-                      fontSize: 16,
-                      fontStyle: FontStyle.normal,
-                      color: Colors.black,
-                      decoration: note.isCompleted
-                          ? TextDecoration.lineThrough
-                          : TextDecoration.none,
-                    ),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: 16,
+                          fontStyle: FontStyle.normal,
+                          color: Colors.grey.shade900,
+                          decoration: note.isCompleted
+                              ? TextDecoration.lineThrough
+                              : TextDecoration.none,
+                        ),
                   ),
                   subtitle: note.description.isNotEmpty
                       ? Text(
                           note.description,
-                          style: GoogleFonts.lato(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w300,
-                            fontStyle: FontStyle.normal,
-                            color: Colors.black,
-                            decoration: note.isCompleted
-                                ? TextDecoration.lineThrough
-                                : TextDecoration.none,
-                          ),
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w300,
+                                    fontStyle: FontStyle.normal,
+                                    color: Colors.grey.shade600,
+                                    decoration: note.isCompleted
+                                        ? TextDecoration.lineThrough
+                                        : TextDecoration.none,
+                                  ),
                         )
                       : null,
                   onTap: () {
