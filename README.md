@@ -1,38 +1,33 @@
 # Notes App 
-
-## CRUD with Hive
 Implementing simple storage operations, CRUD (Create, Read, Update, Delete), using Hive.
 
-## Screenshots
-<p float="left">
-  <img width="200" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/HomeView.png"> <img width="200" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/AddNote.png"> <img width="200" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/ListofNotes.png"> <img width="200" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/UpdateNote.png"> <img width="200" src="https://github.com/luciano01/notes_app/blob/master/lib/core/ui/assets/screenshots/ConfirmNote.png">
-</p>
+## Demo
+Soon...
 
 ## For developers
-> To clone locally
+Create a clone of the target repository:
 ```
 $ git clone git@github.com:luciano01/notes_app.git
+```
+Enter the cloned project directory with the command:
+> Or the path to the cloned project folder.
+```
 $ cd notes_app
 ```
-> Open the project in an editor, if you use VS Code, follow this
-```
-$ cd notes_app
-$ code .
-```
-> To run, follow this on terminal
+Open an Android emulator or connect your smartphone to your computer and execute the following commands:
 ```
 $ flutter clean
 $ flutter pub get
-$ flutter run --release
+$ flutter run
 ```
 
 ## Built with
-- [Dart programming language](https://dart.dev/)
-- [Flutter](https://flutter.dev/)
+- [Dart programming language](https://dart.dev/) Version 3.0.5
+- [Flutter](https://flutter.dev/) Version 3.10.5
 - [Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
 - [Hive](https://pub.dev/packages/hive)
 - [GetX](https://pub.dev/packages/get)
 - [Mocktail](https://pub.dev/packages/mocktail)
 
-## Author
+## Developer and Author
 - Luciano Martins ([Linkedin](https://br.linkedin.com/in/luciano01))
