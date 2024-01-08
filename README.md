@@ -2,7 +2,7 @@
 Implementing simple storage operations, CRUD (Create, Read, Update, Delete), using Hive.
 
 ## Demo
-Soon...
+https://github.com/luciano01/notes_app/assets/28585974/02b42ee0-d201-4c6b-a8ec-2fe83923a023
 
 ## For developers
 Create a clone of the target repository:
